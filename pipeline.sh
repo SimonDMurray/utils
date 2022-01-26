@@ -98,29 +98,61 @@ if $input_sam; then
 fi
 
 # get chromosome nomenclature of vcf and input file
-grep -v '##' $input_vcf | cut -f 1 | uniq > vcf_chroms.txt
+grep -v '#' $input_vcf | cut -f 1 | uniq > vcf_chroms.txt
 samtools view $input_file | cut -f 3 | uniq > input_chroms.txt
+
+# reorder header for sorting later and so chromosome order goes 1, 2, 3 not chr1, chr10, chr11
+if $remove_chr; then
+	grep "@HD" $input_file > filtered.sam
+	grep "@SQ" $input_file | grep "chr*" > sq.tmp
+	> reorder.tmp
+	> store.tmp
+	cat sq.tmp | while read i; do
+	if [[ $i == *chr[1,2][0-9]* ]]; then
+	    echo $i >> store.tmp
+	  elif [[ $i == *chr[A-Z]* ]]; then
+	    echo $i >> store.tmp
+	  else
+	    echo $i >> reorder.tmp
+	  fi
+	done
+	cat store.tmp >> reorder.tmp
+	rm store.tmp
+	rm sq.tmp
+	sed -e 's/  */\t/g' reorder.tmp > tab.tmp
+	cat tab.tmp >> filtered.sam
+	rm reorder.tmp
+	rm tab.tmp
+	grep "@PG" $input_file >> filtered.sam
+	grep "@CO" $input_file >> filtered.sam
+fi
 
 # remove any contigs present in input file that are not named chr
 if $remove_chr; then
-  grep "@" $input_file > filtered.sam 
-    cat input_chroms.txt | while read i; do
+  cat input_chroms.txt | while read i; do
     if [[ $i == chr* ]]; then
-      grep $i $input_file >> filtered.sam
+      grep -v "@" $input_file | grep $i >> filtered.sam
     fi;
   done
 else
   cat $input_file > filtered.sam
 fi
 
+# removing or adding chr nomenclature to chromosomes
 if $remove_chr; then
   sed s/chr/""/g filtered.sam > altered.sam
 else
   awk '$3="chr"$3' filtered.sam > altered.sam
-samtools sort -o sorted.sam altered.sam
+fi
 
+# sorting BAM file based on new chromosome order
+if $remove_chr; then
+  samtools sort -o sorted.sam altered.sam
+fi
+
+# removing temporary files
 if $remove_tmp; then
-  if !$input_sam; then
+  if [[ $input_sam == false ]]; then
     rm tmp.sam
   fi
   rm filtered.sam
