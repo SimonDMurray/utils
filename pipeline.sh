@@ -142,7 +142,11 @@ fi
 if $remove_chr; then
   sed s/chr/""/g filtered.sam > altered.sam
 else
-  awk '$3="chr"$3' filtered.sam > altered.sam
+	samtools view -H filtered.sam | grep "@HD" > altered.sam
+	samtools view -H filtered.sam | grep "@SQ" | sed -r -e 's/^.{7}/&chr/' >> altered.sam
+	samtools view -H filtered.sam | grep "@PG" >> altered.sam
+	samtools view -H filtered.sam | grep "@CO" >> altered.sam
+	samtools view filtered.sam | awk '$3="chr"$3' | sed -e 's/  */\t/g' >> altered.sam
 fi
 
 # sorting BAM file based on new chromosome order
@@ -156,5 +160,7 @@ if $remove_tmp; then
     rm tmp.sam
   fi
   rm filtered.sam
-  rm altered.sam
+  if $remove_chr; then
+    rm altered.sam
+  fi
 fi
