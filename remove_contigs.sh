@@ -24,6 +24,8 @@ mkdir -p $SAMPLE
 cd $SAMPLE
 samtools view -H $FILE | grep "@SQ" | grep -v chr | cut -f 2 | sed 's/[^:]*://' > tmp
 #samtools view -H $FILE | grep "@SQ" | grep -v SN:[0-9] | grep -v SN:[M,X,Y] > tmp
-samtools view -h $FILE | grep -v -Fwf tmp > removed.bam
+samtools view -h $FILE | grep -v -Fwf tmp > removed.tmp
+samtools view -b removed.tmp > removed.bam
 rm tmp
+rm removed.tmp
 cd ../
