@@ -9,6 +9,8 @@ set -euo pipefail
 
 SAMPLE=$1
 FILE=$2
+INFILE=/lustre/scratch117/cellgen/cellgeni/TIC-starsolo/tic-1280/results
+OUTFILE=/lustre/scratch117/cellgen/cellgeni/TIC-10x/tic-1303/data
 
 # SAMPLE is a sanger sample id i.e. FCA_GND10375779
 # FILE is the bam file i.e. possorted_bam.bam
@@ -20,12 +22,12 @@ FILE=$2
 # ../actions/remove_contigs.sh HCA2 possorted_bam.bam
 # ../actions/remove_contigs.sh HCA3 possorted_bam.bam
 
-mkdir -p $SAMPLE
+cd $INFILE
+mkdir -p $OUTFILE/$SAMPLE
 cd $SAMPLE
-samtools view -H $FILE | grep "@SQ" | grep -v chr | cut -f 2 | sed 's/[^:]*://' > tmp
-#samtools view -H $FILE | grep "@SQ" | grep -v SN:[0-9] | grep -v SN:[M,X,Y] > tmp
-samtools view -h $FILE | grep -v -Fwf tmp > removed.tmp
-samtools view -b removed.tmp > removed.bam
-rm tmp
-rm removed.tmp
+#samtools index $FILE
+chrs=$(samtools view -H $FILE | grep chr | cut -f 2 | sed 's/[^:]*://')
+samtools view -h -b $FILE $chrs > $OUTFILE/$SAMPLE/tmp 
+samtools reheader -c 'grep -v SN:[A-Z]' tmp > $OUTFILE/$SAMPLE/removed.bam
+rm $OUTFILE/$SAMPLE/tmp
 cd ../
