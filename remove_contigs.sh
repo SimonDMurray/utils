@@ -28,6 +28,6 @@ cd $SAMPLE
 #samtools index $FILE
 chrs=$(samtools view -H $FILE | grep chr | cut -f 2 | sed 's/[^:]*://')
 samtools view -h -b $FILE $chrs > $OUTFILE/$SAMPLE/tmp 
-samtools reheader -c 'grep -v SN:[A-Z]' tmp > $OUTFILE/$SAMPLE/removed.bam
+samtools reheader -c 'grep -v SN:[A-Z]' $OUTFILE/$SAMPLE/tmp > $OUTFILE/$SAMPLE/removed.bam
 rm $OUTFILE/$SAMPLE/tmp
 cd ../
