@@ -117,11 +117,11 @@ if $remove_chr; then
 	  fi
 	done
 	cat store.tmp >> reorder.tmp
-	rm store.tmp
-	rm sq.tmp
 	sed -e 's/  */\t/g' reorder.tmp > tab.tmp
 	cat tab.tmp >> filtered.sam
+	rm sq.tmp
 	rm reorder.tmp
+	rm store.tmp
 	rm tab.tmp
   samtools view -H $input_file | grep @PG >> filtered.sam
   samtools view -H $input_file | grep @CO >> filtered.sam
@@ -153,7 +153,11 @@ if $remove_chr; then
 fi
 
 # convertin SAM to BAM for output
-samtools view -b -o out.bam sorted.sam
+if $remove_chr; then
+  samtools view -b -o out.bam sorted.sam
+else
+  samtools view -b -o out.bam altered.sam
+fi
 
 # removing temporary files
 if $remove_tmp; then
@@ -161,9 +165,9 @@ if $remove_tmp; then
     rm tmp.bam
   fi
   rm filtered.sam
-  rm sorted.sam
-  rm $input_file.bai
+  rm altered.sam
   if $remove_chr; then
-    rm altered.sam
+    rm $input_file.bai
+    rm sorted.sam
   fi
 fi
