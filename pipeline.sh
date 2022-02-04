@@ -105,24 +105,24 @@ samtools view -H $input_file | grep @SQ | cut -f 2 | cut -c 4- > input_chroms.tx
 if $remove_chr; then
   samtools view -H $input_file | grep @HD > filtered.sam
   samtools view -H $input_file | grep @SQ | grep "chr*" > sq.tmp
-	> reorder.tmp
-	> store.tmp
-	cat sq.tmp | while read i; do
-	if [[ $i == *chr[1,2][0-9]* ]]; then
-	    echo $i >> store.tmp
-	  elif [[ $i == *chr[A-Z]* ]]; then
-	    echo $i >> store.tmp
-	  else
-	    echo $i >> reorder.tmp
-	  fi
-	done
-	cat store.tmp >> reorder.tmp
-	sed -e 's/  */\t/g' reorder.tmp > tab.tmp
-	cat tab.tmp >> filtered.sam
-	rm sq.tmp
-	rm reorder.tmp
-	rm store.tmp
-	rm tab.tmp
+  > reorder.tmp
+  > store.tmp
+  cat sq.tmp | while read i; do
+  if [[ $i == *chr[1,2][0-9]* ]]; then
+    echo $i >> store.tmp
+    elif [[ $i == *chr[A-Z]* ]]; then
+      echo $i >> store.tmp
+    else
+      echo $i >> reorder.tmp
+    fi
+  done
+  cat store.tmp >> reorder.tmp
+  sed -e 's/  */\t/g' reorder.tmp > tab.tmp
+  cat tab.tmp >> filtered.sam
+  rm sq.tmp
+  rm reorder.tmp
+  rm store.tmp
+  rm tab.tmp
   samtools view -H $input_file | grep @PG >> filtered.sam
   samtools view -H $input_file | grep @CO >> filtered.sam
 fi
@@ -140,11 +140,11 @@ fi
 if $remove_chr; then
   sed s/chr/""/g filtered.sam > altered.sam
 else
-	samtools view -H filtered.sam | grep "@HD" > altered.sam
+  samtools view -H filtered.sam | grep "@HD" > altered.sam
   samtools view -H filtered.sam | grep "@SQ" | sed -r -e 's/^.{7}/&chr/' >> altered.sam
-	samtools view -H filtered.sam | grep "@PG" >> altered.sam
-	samtools view -H filtered.sam | grep "@CO" >> altered.sam
-	samtools view filtered.sam | awk '$3="chr"$3' | sed -e 's/  */\t/g' >> altered.sam
+  samtools view -H filtered.sam | grep "@PG" >> altered.sam
+  samtools view -H filtered.sam | grep "@CO" >> altered.sam
+  samtools view filtered.sam | awk '$3="chr"$3' | sed -e 's/  */\t/g' >> altered.sam
 fi
 
 # sorting SAM file based on new chromosome order
