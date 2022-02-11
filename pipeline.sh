@@ -104,25 +104,7 @@ samtools view -H $input_file | grep @SQ | cut -f 2 | cut -c 4- > input_chroms.tx
 # reorder header for sorting later and so chromosome order goes 1, 2, 3 not chr1, chr10, chr11
 if $remove_chr; then
   samtools view -H $input_file | grep @HD > filtered.sam
-  samtools view -H $input_file | grep @SQ | grep "chr*" > sq.tmp
-  > reorder.tmp
-  > store.tmp
-  cat sq.tmp | while read i; do
-  if [[ $i == *chr[1,2][0-9]* ]]; then
-    echo $i >> store.tmp
-    elif [[ $i == *chr[A-Z]* ]]; then
-      echo $i >> store.tmp
-    else
-      echo $i >> reorder.tmp
-    fi
-  done
-  cat store.tmp >> reorder.tmp
-  sed -e 's/  */\t/g' reorder.tmp > tab.tmp
-  cat tab.tmp >> filtered.sam
-  rm sq.tmp
-  rm reorder.tmp
-  rm store.tmp
-  rm tab.tmp
+  samtools view -H $input_file | grep @SQ | grep "chr" | sort -V >> filtered.sam 
   samtools view -H $input_file | grep @PG >> filtered.sam
   samtools view -H $input_file | grep @CO >> filtered.sam
 fi
