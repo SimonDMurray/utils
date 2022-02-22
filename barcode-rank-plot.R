@@ -1,6 +1,6 @@
 # This script creates a basic barcode rank plot similar to that seen in cellranger except using Starsolo ouput
 # The list of UMIs provided by starsolo in the output file UMIperCellSorted.txt is plotted on the y axis with the row number plotted on the x axis
-# Both axes are log scalled
+# Both axes are log scaled
 # You can customise plot with colours, annotations and change axis cutoffs etc
 library(ggplot2)
 umi <- read.table("/lustre/scratch117/cellgen/cellgeni/TIC-starsolo/tic-1313/results/FCA_GND8047885/output/GeneFull/UMIperCellSorted.txt")
