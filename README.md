@@ -8,3 +8,5 @@ pipeline.sh - manipulates SAM, BAM and CRAM files so that the chr naming convent
 remove_contigs.sh - removes extra contigs added to BAM files by processes such as Starsolo 
 
 move-fastqs.sh - combines fastq label with cram label and moves to a new directory so that starsolo can execute on uniquely labelled fastqs
+
+add_assignee.sh - adds a new file to each ticket in our teams ticket structure with the information on who the jira ticket is assigned to
