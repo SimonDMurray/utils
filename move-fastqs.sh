@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 data_dir=/lustre/scratch117/cellgen/cellgeni/TIC-starsolo/tic-1313/data5
 fastq_dir=/lustre/scratch117/cellgen/cellgeni/TIC-starsolo/tic-1313/fastqs5
 
