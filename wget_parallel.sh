@@ -7,3 +7,5 @@ set -euo pipefail
 sf=URLs_list.txt
 
 cat $sf | xargs -P 4 -I{} wget {}
+
+## wget --basement is an alternative if you want to leave it running in background and continue script
