@@ -14,3 +14,5 @@ add_assignee.sh - adds a new file to each ticket in our teams ticket structure w
 wget_parallel.sh - parallelises downloading files using wget and xargs
 
 bz2_to_gz.sh - parallelises the conversion of bz2 to gz
+
+generic-bsub.sh - illustrates the concept of how to bsub properly
