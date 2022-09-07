@@ -21,5 +21,12 @@ IMAGE="/path/to/singularity/image.sif"
 
 ###################### DONT CHANGE OPTIONS BELOW THIS LINE ###########################
 
-bsub -G $GROUP -n $CPU -R"span[hosts=1] select[mem>${MEM}] rusage[mem=${MEM}]" -M $MEM -o $WDIR/$SAMPLE-%J.bsub.log -e $WDIR/$SAMPLE-%J.bsub.err -q $QUE \
+bsub \
+  -G $GROUP \
+  -n $CPU \
+  -R"span[hosts=1] select[mem>${MEM}] rusage[mem=${MEM}]" \
+  -M $MEM \
+  -o $WDIR/$SAMPLE-%J.bsub.log \
+  -e $WDIR/$SAMPLE-%J.bsub.err 
+  -q $QUE \
   singularity exec -B /lustre,/nfs $IMAGE $SCRIPT $SAMPLE $ARG
