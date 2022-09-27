@@ -2,15 +2,19 @@
 
 set -euo pipefail
 
-data_dir=/lustre/scratch117/cellgen/cellgeni/TIC-starsolo/tic-1313/data5
-fastq_dir=/lustre/scratch117/cellgen/cellgeni/TIC-starsolo/tic-1313/fastqs5
+data_dir=/lustre/scratch117/cellgen/cellgeni/TIC-starsolo/tic-XXXX/data
+fastq_dir=/lustre/scratch117/cellgen/cellgeni/TIC-starsolo/tic-XXXX/fastqs
 
 cd $data_dir
-for i in *;
-  do cd $i
-  for j in *fastq*;
-    do k=$i'_'$j
-    mv $data_dir/$i/$j $fastq_dir/$k ;
-  done;
-  cd ../
+for sample in *; do 
+  if [[ $sample == "library_info" ]]; then
+    continue
+  else
+    cd $sample
+    for fq in *fastq*; do 
+      file="${sample}_${fq}"
+      mv $data_dir/$sample/$fq $fastq_dir/$file 
+    done
+    cd ..
+  fi
 done
