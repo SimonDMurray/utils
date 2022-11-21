@@ -16,3 +16,5 @@ wget_parallel.sh - parallelises downloading files using wget and xargs
 bz2_to_gz.sh - parallelises the conversion of bz2 to gz
 
 generic-bsub.sh - illustrates the concept of how to bsub properly
+
+bsub_bam_to_fastq.sh - script that converts bams to fastqs on Sanger FARM
