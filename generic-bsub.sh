@@ -12,7 +12,7 @@ ARGS=${@:3}
 
 #BSUB ARGUMENTS
 
-CPUS=16
+CPU=16
 MEM=4000
 QUE="long"
 GROUP="cellgeni"
