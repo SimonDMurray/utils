@@ -47,7 +47,7 @@ fi
 grep "#" $input_vcf > $output_vcf
 
 if [[  $remove_chr == true ]]; then
-  grep -v "#" $input_vcf | sed 's/[^[0-9]*//' >> $output_vcf
+  grep -v "#" $input_vcf | sed 's/^chr//' >> $output_vcf
 else
   grep -v "#" $input_vcf | sed 's/^/chr/' >> $output_vcf
 fi
