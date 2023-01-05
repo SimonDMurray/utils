@@ -44,10 +44,20 @@ if [[  $input_vcf == "" ]]; then
    false
 fi
 
-grep "#" $input_vcf > $output_vcf
-
 if [[  $remove_chr == true ]]; then
+  #remove any occurrence of chr in the header
+  grep "##" $input_vcf | sed 's/chr//' > $output_vcf
+  #add field identifier line
+  grep "#CHROM" $input_vcf >> $output_vcf
+  #remove chr from the beginning of each sample line
   grep -v "#" $input_vcf | sed 's/^chr//' >> $output_vcf
 else
-  grep -v "#" $input_vcf | sed 's/^/chr/' >> $output_vcf
+  #add chr to the beginning of any chromosomes starting with a number or X,Y,Z in the header 
+  grep "##" $input_vcf | sed -e '/ID=[0-9]/ s/ID=/ID=chr/ ; /ID=[0-9]/! s///' | sed -e '/ID=[M,X,Y]/ s/ID=/ID=chr/ ; /ID=[M,X,Y]/! s///' > $output_vcf
+  #add field identifier line
+  grep "#CHROM" $input_vcf >> $output_vcf
+  #add chr to any sample line starting with a number or X,Y,Z
+  grep -v "#" $input_vcf | egrep "^[0-9]|^[M,X,Y]" | sed 's/^/chr/' >> $output_vcf
+  #add any sample lines not starting with a number or X,Y,Z (contigs)
+  grep -v "#" $input_vcf | egrep -v "^[0-9]|^[M,X,Y]" >> $output_vcf
 fi
