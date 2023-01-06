@@ -17,6 +17,6 @@ Repo filled with little useful bioinformatics scripts
 
 `generic-bsub.sh` - illustrates the concept of how to bsub properly
 
-`bsub_bam_to_fastq.sh - script that converts bams to fastqs on Sanger FARM
+`bsub_bam_to_fastq.sh` - script that converts bams to fastqs on Sanger FARM
 
 `generic-job-array-bsub.sh` - illustrates dynamic bsub job array submission utilising inputted sample file
