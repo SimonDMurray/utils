@@ -28,6 +28,6 @@ bsub \
   -R"span[hosts=1] select[mem>${MEM}] rusage[mem=${MEM}]" \
   -M $MEM \
   -o $WDIR/$SAMPLE-%J.bsub.log \
-  -e $WDIR/$SAMPLE-%J.bsub.err 
+  -e $WDIR/$SAMPLE-%J.bsub.err \
   -q $QUE \
   singularity exec -B /lustre,/nfs $IMAGE $SCRIPT $SAMPLE $ARG
