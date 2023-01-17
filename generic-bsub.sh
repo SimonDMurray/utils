@@ -12,6 +12,7 @@ ARGS=${@:3}
 
 #BSUB ARGUMENTS
 
+WDIR=`pwd`
 CPU=16
 MEM=4000
 QUE="long"
