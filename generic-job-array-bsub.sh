@@ -19,7 +19,7 @@ QUEUE="long"
 
 #### DO NOT CHANGE BELOW THIS LINE ####
 
-FILELENGTH=`wc -l $SAMPLEFILE | cut -c 1`
+FILELENGTH=`wc -l $SAMPLEFILE | cut -f 1 -d " "`
 
 bsub \
   -G ${GROUP} \
