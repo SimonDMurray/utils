@@ -20,3 +20,5 @@ Repo filled with little useful bioinformatics scripts
 `bsub_bam_to_fastq.sh` - script that converts bams to fastqs on Sanger FARM
 
 `generic-job-array-bsub.sh` - illustrates dynamic bsub job array submission utilising inputted sample file
+
+`fix-erroneous-reads.sh` - illlustrates how to fix fastq files that have inconsistent read lengths
