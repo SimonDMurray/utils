@@ -3,9 +3,18 @@
 set -euo pipefail
 
 ## A FEW NOTES:
-## 1) Install bbmap tools with:
-# `wget https://sourceforge.net/projects/bbmap/files/latest/download -O bbmap.tar.gz && tar -xvf bbmap.tar.gz && rm bbmap.tar.gz`
-## 2) Ensure fastqs are gzipped and in cellranger format i.e. SAMPLEID_S1_L00*_R[1|2]_001.fastq.gz 
+
+## Please only use this if it makes sense with the chemistry. Look at the chemistry of the sequencing being done and remove any reads that are shorter (and potentially longer) than that read length.
+## Chemistry | R1 read length:
+## 3' v1 | 24
+## 3' v2 | 26
+## 3' v3, v3.1 | 28
+## 5' v1.1, v2 | 26
+## 5' v3 | 28
+## multiome | 28
+
+## Install bbmap tools with `wget https://sourceforge.net/projects/bbmap/files/latest/download -O bbmap.tar.gz && tar -xvf bbmap.tar.gz && rm bbmap.tar.gz`
+## Ensure fastqs are gzipped and in cellranger format i.e. SAMPLEID_S1_L00*_R[1|2]_001.fastq.gz 
 
 FQDIR=${1:?"Please provide path to directory containing fastqs"}
 SAMPLEID=${2:?"Please provide the sampleID for the broken fastqs"}
