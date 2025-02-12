@@ -5,7 +5,7 @@ Repo filled with little useful bioinformatics scripts
 
 `pipeline.sh` - manipulates SAM, BAM and CRAM files so that the chr naming convention used by CellRanger is added or removed, reorders the header as chr naming convention orders head chr1, chr10, chr11 etc, resorts BAM file to match new header and removes contigs. Also generates files listing chromosomes and contigs present in BAM and VCF file to check naming convention matches.
 
-`remove_contigs.sh` - removes extra contigs added to BAM files by processes such as Starsolo 
+`remove_contigs.sh` - removes extra contigs added to BAM files by processes such as Starsolo
 
 `move-fastqs.sh` - combines fastq label with cram label and moves to a new directory so that starsolo can execute on uniquely labelled fastqs
 
@@ -21,4 +21,6 @@ Repo filled with little useful bioinformatics scripts
 
 `generic-job-array-bsub.sh` - illustrates dynamic bsub job array submission utilising inputted sample file
 
-`fix-erroneous-reads.sh` - illlustrates how to fix fastq files that have inconsistent read lengths
+`fix-erroneous-reads.sh` - illustrates how to fix fastq files that have inconsistent read lengths
+
+`parallel_aws_copy.sh` - illustrates parallelising S3 copy commands into chunks
