@@ -36,10 +36,24 @@ index=1
 # Only get the file length value from `wc -l`
 MANIFEST_LENGTH=$(wc -l ${MANIFEST} | awk '{print $1}')
 # Throttle number of jobs in parallel by doing a sequential iteration in chunks and then parallise each chunk
-while [ ${index} -le ${MANIFEST_LENGTH} ]; do
-    echo $index
+while [ "${index}" -le "${MANIFEST_LENGTH}" ]; do
     next_index=$(( index + PARALLEL_NUMBER ))
-    # Parallel calls of function passing manifest file lines as input to the function
-    awk "NR>=${index}&&NR<${next_index}" ${MANIFEST} | xargs -P ${PARALLEL_NUMBER} -I {} bash -c 's3_copy "$@"' _ {}
+
+    # Create a subshell for isolation
+    (
+        count=0
+        awk "NR >= ${index} && NR < ${next_index}" "${MANIFEST}" | while IFS= read -r line; do
+            grep_s3_copy_info "$line" &  # launch in background
+            count=$((count + 1))
+
+            # Wait after reaching PARALLEL_NUMBER jobs in this chunk
+            if [ "$count" -ge "${PARALLEL_NUMBER}" ]; then
+                wait
+                count=0
+            fi
+        done
+        wait  # wait for remaining jobs in the chunk
+    )
+
     index=${next_index}
 done
